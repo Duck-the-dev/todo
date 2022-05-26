@@ -1,0 +1,30 @@
+<!-- todo_list/todo_app/templates/todo_app/todolist_form.html -->
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3 class="container-fluid d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4"
+>{{ title }}</h3>
+<div class="container-fluid d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4"
+>
+    <div >
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <div class="container-fluid d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4"
+
+            >
+            <input
+            value="Save"
+            type="submit">
+        <input
+            value="Cancel"
+            type="button"
+            onclick="location.href='{% url "index" %}';"></div>
+          
+        </form>
+    </div>
+</div>
+
+{% endblock %}
