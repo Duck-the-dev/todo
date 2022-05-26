@@ -2,22 +2,28 @@
 
 {% block content %}
 
+
 <h3 class="container-fluid d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4"
 >{{ title }}</h3>
-<form method="post" class="container-fluid border fw-normal shadow-sm p-2 mb-5 rounded d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4"
+<form method="post"  action = "{{apply}}" class="container-fluid border fw-normal shadow-sm p-2 mb-5 rounded d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4"
 >
     {% csrf_token %}
     <table class="container-fluid d-flex flex-wrap align-items-center justify-content-center mx-auto py-4 mb-4"
     >
         {{ form.as_table }}
+        
     </table>
+
+    
     <div class="container-fluid d-flex flex-wrap align-items-center justify-content-center justify-content-md-center mx-auto py-3 mb-4"
     >
-    <input
+
+
+
+
+       <input
         value="Submit"
-        type="submit" 
-        name = "complete"
-        onclick="{{ Completed.apply }}">
+        type="submit">
     <input
         value="Cancel"
         type="button"
@@ -28,6 +34,11 @@
             type="button"
             onclick="location.href=
             '{% url "item-delete" todo_list.id object.id %}'">
+
+
+            <button type="submit"  onclick={%url 'apply' todo_list.id object.id%}>Completed</button>
+            
+
             
     {% endif %}
 

@@ -42,6 +42,7 @@ class ItemCreate(CreateView):
         "title",
         "description",
         "due_date",
+
     ]
 
     def get_initial(self):
@@ -78,6 +79,9 @@ class ItemUpdate(UpdateView):
         return context
 
     def get_success_url(self):
+        query = ToDoList.objects.filter(todoitem=self.kwargs["list_id"])
+        query = query.filter(completed=True)
+
         return reverse("list", args=[self.object.todo_list_id])
 
 
@@ -99,31 +103,43 @@ class ItemDelete(DeleteView):
         return context
 
 
-class ItemComplete(UpdateView):
+class Apply(CreateView):
     model = Completed
+    fields = [
+        "todo_list",
+        "todo_item",
+        "due_date",
+
+    ]
+    template_name = 'todo_app/complete_confirm.html'
+
+    def __init__(self):
+        Completed.objects.create(
+            todo_list=self.POST.get('todo_list'),
+            todo_item=self.POST.get('todo_item'),
+            due_date=self.POST.get('due_date'),
+        )
+        Completed.save()
+
+    def get_initial(self):
+        initial_data = super(Apply, self).get_initial()
+        todo_list = ToDoList.objects.get(id=self.kwargs["list_id"])
+        initial_data["todo_list"] = todo_list
+        return initial_data
+
+    def get_context_data(self):
+        context = super(ItemCreate, self).get_context_data()
+        todo_list = ToDoList.objects.get(id=self.kwargs["list_id"])
+        context["todo_list"] = todo_list
+        return context
 
     def get_success_url(self):
-        return reverse("item-complete", args=[self.kwargs["list_id"], self.object.todo_list_id])
-
-    def get_context_data(self, **kwargs):
-        context = super(ItemComplete).get_context_data(**kwargs)
-        context["todo_list"] = self.object.todo_list
-
-        return context
+        return reverse("completed-list", args=[self.object.todo_list_id])
 
 
 class CompletedView(ListView):
     model = Completed
     template_name = "todo_app/completed.html"
-
-    def apply(self):
-        if self.method == "POST":
-            if self.POST.get('complete'):
-                Completed.objects.create(
-                    todo_list=self.POST.get('todo_list'),
-                    todo_item=self.POST.get('todo_item'), )
-
-        return render(self, 'todo_app/completed.html')
 
     def get_success_url(self):
         return reverse_lazy("completed-list", args=[self.kwargs["list_id"]])
@@ -131,7 +147,14 @@ class CompletedView(ListView):
     def get_context_data(self):
         context = super().get_context_data()
         context["todo_list"] = ToDoList.objects.get(id=self.kwargs["list_id"])
+        query = Completed.objects.filter(todo_list__todoitem__completed_item=True)
+
+        context["completed_list"] = query
         return context
 
     def get_queryset(self):
-        return Completed.objects.filter(todo_list_id=self.kwargs["list_id"])
+        # query = Completed.objects.filter(todo_list_id=self.kwargs["list_id"])
+        query = Completed.objects.filter(todo_list_id=self.kwargs["list_id"])
+        query = query.filter(todo_list__todoitem__completed_item="True")
+
+        return query

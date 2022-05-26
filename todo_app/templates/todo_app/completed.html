@@ -17,8 +17,12 @@
                             role="button"
                             onclick="location.href=
                             '{% url "list" todo.todo_list.id %}'">
-                            {{ todo.todo_list.title }}
-                            (Due {{ todo.due_date | date:"l, F j"}})
+                  
+                            {{ completed_list}}
+
+                        
+                             
+                            (Due {{ todo.todo_item.due_date | date:"l, F j"}})
                         </div>
                     </div>
                 </li>

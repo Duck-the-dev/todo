@@ -16,6 +16,10 @@ urlpatterns = [
         "list/<int:list_id>/item/<int:pk>/",
         views.ItemUpdate.as_view(),
         name="item-update",
+    ),   path(
+        "list/<int:list_id>/item/<int:pk>/apply",
+        views.Apply.as_view(),
+        name="apply",
     ),
 
     path(
