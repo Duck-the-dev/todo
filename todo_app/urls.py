@@ -17,6 +17,7 @@ urlpatterns = [
         views.ItemUpdate.as_view(),
         name="item-update",
     ),
+
     path(
         "list/<int:pk>/delete/", views.ListDelete.as_view(), name="list-delete"
     ),
@@ -25,5 +26,7 @@ urlpatterns = [
         views.ItemDelete.as_view(),
         name="item-delete",
     ),
+    path("list/<int:list_id>/completed",
+         views.CompletedView.as_view(), name="completed-list"),
 
 ]

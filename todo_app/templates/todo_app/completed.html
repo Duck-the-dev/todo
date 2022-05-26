@@ -5,8 +5,8 @@
     <div 
     >
         <div class="container-fluid border fw-normal shadow-sm p-2 mb-5 rounded d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4">
-            <h3 class="container-fluid text-center mx-auto py-3 mb-4">Edit list:</h3>
-            <h5>{{ todo_list.title | upper }}</h5>
+            <h3 class="container-fluid text-center mx-auto py-3 mb-4">Completed list:</h3>
+            <h5>{{ completed_todo_list.title | upper }}</h5>
         </div>
         <div class="container-fluid border fw-normal shadow-sm p-2 mb-5 rounded d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4">
             <ul>
@@ -16,41 +16,21 @@
                         <div
                             role="button"
                             onclick="location.href=
-                            '{% url "item-update" todo_list.id todo.id %}'">
-                            {{ todo.title }}
+                            '{% url "list" todo.todo_list.id %}'">
+                            {{ todo.todo_list.title }}
                             (Due {{ todo.due_date | date:"l, F j"}})
                         </div>
                     </div>
                 </li>
+
+                
                 {% empty %}
                 <p>There are no to-do items in this list.</p>
                 {% endfor %}
             </ul>
             
         </div>
-
-        {% for todolist in object_list %}
-        <p class="container-fluid d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4">
-                <input
-                    value="Completed"
-                    type="button"
-                    onclick="location.href='{% url "completed-list" todolist.id %}'"/>
-            </p>
-            {% endfor %}
-        <p class="container-fluid d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4"
-        >
-            <input
-                value="Add a new item"
-                type="button"
-                onclick="location.href='{% url "item-add" todo_list.id %}'"
-            />
-            <input
-            value="Delete this list"
-            type="button"
-            onclick="location.href=
-            '{% url "list-delete" todo_list.id %}'" />
-        </p>
-
+    
     </div>
 </div>
 {% endblock %}

@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
-from todo_app.models import ToDoList, ToDoItem
+from todo_app.models import ToDoList, ToDoItem, Completed
 
 
 class ListListView(ListView):
@@ -68,6 +68,7 @@ class ItemUpdate(UpdateView):
         "title",
         "description",
         "due_date",
+        'completed_item',
     ]
 
     def get_context_data(self):
@@ -82,8 +83,7 @@ class ItemUpdate(UpdateView):
 
 class ListDelete(DeleteView):
     model = ToDoList
-    # You have to use reverse_lazy() instead of reverse(),
-    # as the urls are not loaded when the file is imported.
+
     success_url = reverse_lazy("index")
 
 
@@ -97,3 +97,41 @@ class ItemDelete(DeleteView):
         context = super().get_context_data(**kwargs)
         context["todo_list"] = self.object.todo_list
         return context
+
+
+class ItemComplete(UpdateView):
+    model = Completed
+
+    def get_success_url(self):
+        return reverse("item-complete", args=[self.kwargs["list_id"], self.object.todo_list_id])
+
+    def get_context_data(self, **kwargs):
+        context = super(ItemComplete).get_context_data(**kwargs)
+        context["todo_list"] = self.object.todo_list
+
+        return context
+
+
+class CompletedView(ListView):
+    model = Completed
+    template_name = "todo_app/completed.html"
+
+    def apply(self):
+        if self.method == "POST":
+            if self.POST.get('complete'):
+                Completed.objects.create(
+                    todo_list=self.POST.get('todo_list'),
+                    todo_item=self.POST.get('todo_item'), )
+
+        return render(self, 'todo_app/completed.html')
+
+    def get_success_url(self):
+        return reverse_lazy("completed-list", args=[self.kwargs["list_id"]])
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context["todo_list"] = ToDoList.objects.get(id=self.kwargs["list_id"])
+        return context
+
+    def get_queryset(self):
+        return Completed.objects.filter(todo_list_id=self.kwargs["list_id"])

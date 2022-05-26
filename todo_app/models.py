@@ -24,6 +24,8 @@ class ToDoItem(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     due_date = models.DateTimeField(default=one_week_hence)
     todo_list = models.ForeignKey(ToDoList, on_delete=models.CASCADE)
+    completed_item = models.BooleanField(default=False)
+
 
     def get_absolute_url(self):
         return reverse(
@@ -32,6 +34,23 @@ class ToDoItem(models.Model):
 
     def __str__(self):
         return f"{self.title}: due {self.due_date}"
+
+    class Meta:
+        ordering = ["due_date"]
+
+
+class Completed(models.Model):
+    todo_list = models.ForeignKey(ToDoList, on_delete=models.CASCADE)
+    todo_item = models.ForeignKey(ToDoItem, on_delete=models.CASCADE)
+    due_date = models.DateTimeField(default=one_week_hence)
+
+    def __str__(self):
+        return f" {self.todo_list.title} : {self.todo_item.title}: due {self.todo_item.due_date}"
+
+    def get_absolute_url(self):
+        return reverse(
+            "index", args=[str(self.todo_list.id)]
+        )
 
     class Meta:
         ordering = ["due_date"]
