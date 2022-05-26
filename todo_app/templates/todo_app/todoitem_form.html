@@ -1,0 +1,35 @@
+<!-- todo_list/todo_app/templates/todo_app/todoitem_form.html -->
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3 class="container-fluid d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4"
+>{{ title }}</h3>
+<form method="post" class="container-fluid border fw-normal shadow-sm p-2 mb-5 rounded d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4"
+>
+    {% csrf_token %}
+    <table class="container-fluid d-flex flex-wrap align-items-center justify-content-center mx-auto py-3 mb-4"
+    >
+        {{ form.as_table }}
+    </table>
+    <div class="container-fluid d-flex flex-wrap align-items-center justify-content-center justify-content-md-center mx-auto py-3 mb-4"
+    >
+    <input
+        value="Submit"
+        type="submit">
+    <input
+        value="Cancel"
+        type="button"
+        onclick="location.href='{% url "list" todo_list.id %}'">
+    {% if object %}
+        <input
+            value="Delete this item"
+            type="button"
+            onclick="location.href=
+            '{% url "item-delete" todo_list.id object.id %}'">
+    {% endif %}
+</div>
+
+</form>
+
+{% endblock %}

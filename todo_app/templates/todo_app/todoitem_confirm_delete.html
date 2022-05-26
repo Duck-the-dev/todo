@@ -1,0 +1,31 @@
+<!-- todo_list/todo_app/templates/todo_app/todoitem_confirm_delete.html -->
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="container-fluid border fw-normal shadow-sm p-2 mb-5 rounded d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4">
+    <h3 class="container-fluid d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4">Delete To-do Item</h3>
+
+    <p>Are you sure you want to delete the item: <b>{{ object.title }}</b>
+       from the list <i>{{ todo_list.title }}</i>?</p>
+     <div class="container-fluid d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4">
+
+
+        <form method="POST">
+            {% csrf_token %}
+            <input
+                value="Yes, delete."
+                type="submit">
+            <input
+                value="Cancel"
+                type="button"
+                onclick="location.href='{% url "list" todo_list.id %}';">
+        </form>
+    
+     </div>
+    
+</div>
+
+
+{% endblock %}
