@@ -3,7 +3,6 @@ from django.shortcuts import render
 # Create your views here.
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-
 from todo_app.forms import SupportForm
 from todo_app.models import ToDoList, ToDoItem, Support
 
@@ -43,7 +42,6 @@ class ItemCreate(CreateView):
         "title",
         "description",
         "due_date",
-
     ]
 
     def get_initial(self):
@@ -62,12 +60,6 @@ class ItemCreate(CreateView):
     def get_success_url(self):
         return reverse("list", args=[self.object.todo_list_id])
 
-
-class SupportView(CreateView):
-    model = Support
-    form_class = SupportForm
-    # fields = '__all__'
-    template_name = 'todo_app/support.html'
 
 class ItemUpdate(UpdateView):
     model = ToDoItem
@@ -104,3 +96,10 @@ class ItemDelete(DeleteView):
         context = super().get_context_data(**kwargs)
         context["todo_list"] = self.object.todo_list
         return context
+
+
+class SupportView(CreateView):
+    model = Support
+    form_class = SupportForm
+    # fields = '__all__'
+    template_name = 'todo_app/support.html'

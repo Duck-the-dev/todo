@@ -5,7 +5,7 @@
 
 <h3 class="container-fluid d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4"
 >{{ title }}</h3>
-<form method="post"  action = "{{apply}}" class="container-fluid border fw-normal shadow-sm p-2 mb-5 rounded d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4"
+<form method="post" class="container-fluid border fw-normal shadow-sm p-2 mb-5 rounded d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4"
 >
     {% csrf_token %}
     <table class="container-fluid d-flex flex-wrap align-items-center justify-content-center mx-auto py-4 mb-4"
@@ -36,9 +36,6 @@
             '{% url "item-delete" todo_list.id object.id %}'">
 
 
-            
-
-            
     {% endif %}
 
 </div>

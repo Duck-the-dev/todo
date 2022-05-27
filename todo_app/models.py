@@ -1,6 +1,5 @@
 from django.core.validators import validate_email
 from django.utils import timezone
-
 from django.db import models
 from django.urls import reverse
 
@@ -38,9 +37,8 @@ class ToDoItem(models.Model):
         ordering = ["due_date"]
 
 
-
 class Support(models.Model):
-    title = models.CharField(max_length=120, )
+    title = models.CharField(max_length=120)
     email = models.EmailField(validators=[validate_email])
     body = models.TextField()
 
