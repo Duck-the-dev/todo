@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+
+{% block content %}
+<div class="container-fluid border fw-normal shadow-sm p-2 mb-5 rounded d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4">
+
+    <p class ="text-center">
+    We made a simple Todo List app to help us organize our work on a daily bases <br>
+    <span class="h5 d-flex flex-wrap align-items-center justify-content-center justify-content-md-evenly mx-auto py-3 mb-4"> help us by report any bugs or if you have suggestions for next update</span>
+
+</p>
+</div>
+
+    <form method="POST">
+    {% csrf_token %}
+  <div class="container-sm my-1 mx-auto align-items-center justify-content-center justify-content-evenly text-center">
+    <div class="form-group">{{form.as_p}}</div>
+    <br>
+    <button type="submit" class="btn btn-secondary">submit</button>
+  </div>
+</form>
+
+{% endblock content %}
+

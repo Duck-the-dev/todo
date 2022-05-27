@@ -1,8 +1,11 @@
 from django.urls import path
 
 from todo_app import views
+from todo_app.views import SupportView
 
 urlpatterns = [
+    path('about/', SupportView.as_view(), name="about"),
+
     path("", views.ListListView.as_view(), name="index"),
     path("list/<int:list_id>/",
          views.ItemListView.as_view(), name="list"),
@@ -16,10 +19,6 @@ urlpatterns = [
         "list/<int:list_id>/item/<int:pk>/",
         views.ItemUpdate.as_view(),
         name="item-update",
-    ),   path(
-        "list/<int:list_id>/item/<int:pk>/apply",
-        views.Apply.as_view(),
-        name="apply",
     ),
 
     path(
@@ -30,7 +29,5 @@ urlpatterns = [
         views.ItemDelete.as_view(),
         name="item-delete",
     ),
-    path("list/<int:list_id>/completed",
-         views.CompletedView.as_view(), name="completed-list"),
 
 ]

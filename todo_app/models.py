@@ -1,3 +1,4 @@
+from django.core.validators import validate_email
 from django.utils import timezone
 
 from django.db import models
@@ -24,7 +25,6 @@ class ToDoItem(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     due_date = models.DateTimeField(default=one_week_hence)
     todo_list = models.ForeignKey(ToDoList, on_delete=models.CASCADE)
-    completed_item = models.BooleanField(default=False)
 
     def get_absolute_url(self):
         return reverse(
@@ -38,18 +38,15 @@ class ToDoItem(models.Model):
         ordering = ["due_date"]
 
 
-class Completed(models.Model):
-    todo_list = models.ForeignKey(ToDoList, on_delete=models.CASCADE)
-    todo_item = models.ForeignKey(ToDoItem, on_delete=models.CASCADE)
-    due_date = models.DateTimeField(default=one_week_hence)
+
+class Support(models.Model):
+    title = models.CharField(max_length=120, )
+    email = models.EmailField(validators=[validate_email])
+    body = models.TextField()
+
+    @staticmethod
+    def get_absolute_url():
+        return reverse("index")
 
     def __str__(self):
-        return f" {self.todo_list.title} : {self.todo_item.title}: due {self.todo_item.due_date}"
-
-    def get_absolute_url(self):
-        return reverse(
-            "index", args=[str(self.todo_list.id)]
-        )
-
-    class Meta:
-        ordering = ["due_date"]
+        return self.title + ' | ' + str(self.email)
